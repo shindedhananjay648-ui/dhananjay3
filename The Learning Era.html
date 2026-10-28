@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Learning Era</title>
+<style>
+:root{--bg:#f4f3ef;--card:#fff;--text:#1f2328;--muted:#6b7280;--line:#e5e3db;--accent:#5b4bff;--accent2:#8f7bff;--on:#fff;--ok:#16a34a;--okbg:#e7f7ed;--bad:#dc2626;--badbg:#fdeaea;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111216;--card:#1c1e24;--text:#eceef1;--muted:#9aa1ab;--line:#2c2f37;--accent:#8b7dff;--accent2:#6c5cff;--on:#101014;--ok:#4ade80;--okbg:#14301f;--bad:#f87171;--badbg:#391c1c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111216;--card:#1c1e24;--text:#eceef1;--muted:#9aa1ab;--line:#2c2f37;--accent:#8b7dff;--accent2:#6c5cff;--on:#101014;--ok:#4ade80;--okbg:#14301f;--bad:#f87171;--badbg:#391c1c;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+#app{height:100%;max-width:480px;margin:0 auto;display:flex;flex-direction:column;background:var(--bg);position:relative;overflow:hidden}
+@media (min-width:520px){#app{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
+header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px}
+.logo{font-weight:800;font-size:1.05rem}
+.pills span{background:var(--card);border:1px solid var(--line);border-radius:99px;padding:4px 10px;font-size:.85rem;font-weight:600;margin-left:6px}
+#screens{flex:1;overflow-y:auto;position:relative}
+.screen{padding:4px 16px 24px;animation:in .25s ease}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.hide{display:none!important}
+h2{margin:6px 0 2px;font-size:1.5rem}
+.sub{color:var(--muted);margin:0 0 14px;font-size:.95rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px}
+.hero{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:0}
+.hero .sub{color:#e9e6ff}
+textarea{width:100%;height:130px;resize:none;border:0;border-radius:12px;padding:12px;background:var(--card);color:var(--text);font:inherit}
+.row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+select{flex:1;min-width:90px;padding:9px;border-radius:10px;border:0;background:rgba(255,255,255,.9);color:#1f2328;font:inherit;font-size:.9rem}
+button{cursor:pointer;border:0;font:inherit;font-weight:700;color:inherit;background:none}
+.btn{background:var(--accent);color:var(--on);border-radius:14px;padding:14px 18px;width:100%;font-size:1rem}
+.btn.white{background:#fff;color:#4a3bd8}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.btn:disabled{opacity:.45;cursor:default}
+.link{color:var(--accent);font-size:.9rem;padding:4px 0}
+.deck{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:10px}
+.deck .ic{font-size:1.5rem}.deck .t{flex:1;min-width:0}
+.deck b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.deck small{color:var(--muted)}
+.x{color:var(--muted);padding:6px;font-size:1.1rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
+.stat b{font-size:1.5rem;display:block}.stat span{color:var(--muted);font-size:.85rem}
+.m{margin:10px 0}.m span{font-size:.9rem}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;background:var(--ok);border-radius:4px;transition:width .5s}
+.bar i.low{background:var(--bad)}
+.week{display:flex;gap:6px;justify-content:space-between}
+.day{flex:1;text-align:center;font-size:.75rem;color:var(--muted)}
+.day i{display:block;height:34px;border-radius:10px;background:var(--line);margin-bottom:4px}
+.day.on i{background:var(--accent)}
+nav{display:flex;border-top:1px solid var(--line);background:var(--card);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
+nav button{flex:1;padding:6px;color:var(--muted);font-size:.72rem;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button span{font-size:1.3rem}
+nav button.on{color:var(--accent)}
+/* quiz */
+#quiz{display:flex;flex-direction:column;height:100%;padding-bottom:0}
+.qtop{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.qtop .bar{flex:1;height:10px;margin:0}.qtop .bar i{background:var(--accent)}
+.topic{display:inline-block;font-size:.75rem;color:var(--accent);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:2px 10px;margin-bottom:10px;font-weight:700}
+.q{font-size:1.2rem;font-weight:700;margin:0 0 16px}
+.opt{display:block;width:100%;text-align:left;margin-bottom:10px;padding:14px;border-radius:14px;background:var(--card);border:2px solid var(--line);font-weight:600;transition:.15s}
+.opt.sel{border-color:var(--accent);background:var(--bg)}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}
+.opt.bad{border-color:var(--bad);background:var(--badbg)}
+.chips{display:flex;gap:8px;align-items:center;margin:4px 0 12px;font-size:.85rem;color:var(--muted)}
+.chip{padding:6px 14px;border-radius:99px;border:1px solid var(--line);font-size:.85rem;color:var(--text)}
+.chip.on{background:var(--accent);color:var(--on);border-color:var(--accent)}
+.qbot{margin-top:auto;padding:12px 0 16px}
+#sheet{position:absolute;left:0;right:0;bottom:0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));border-top-left-radius:22px;border-top-right-radius:22px;animation:up .25s ease;z-index:5}
+#sheet.ok{background:var(--okbg)}#sheet.bad{background:var(--badbg)}
+@keyframes up{from{transform:translateY(100%)}to{transform:none}}
+#sheet h3{margin:0 0 4px}#sheet.ok h3{color:var(--ok)}#sheet.bad h3{color:var(--bad)}
+#sheet p{margin:0 0 8px;font-size:.95rem}
+.simple{border-left:3px solid var(--accent);padding:4px 10px;margin:6px 0 10px;font-size:.9rem;color:var(--muted)}
+.ring{width:150px;height:150px;margin:6px auto 4px;display:block}
+.ring text{font-size:30px;font-weight:800;fill:var(--text)}
+.center{text-align:center}
+.overlay{position:absolute;inset:0;background:var(--bg);z-index:9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.spin{width:46px;height:46px;border:5px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.err{color:var(--bad);font-size:.9rem;margin-top:8px}
+.mnav{display:flex;justify-content:space-between;align-items:center}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:10px}
+.ch{text-align:center;font-size:.75rem;color:var(--muted)}
+.cd{aspect-ratio:1;border-radius:10px;background:var(--bg);border:1px solid var(--line);font-size:.85rem;color:var(--text)}
+.cd.on{background:var(--accent);color:var(--on);border-color:var(--accent);opacity:.65}
+.cd.hi{opacity:1}
+.cd.today{outline:2px solid var(--text);outline-offset:1px}
+.cd.sel{box-shadow:0 0 0 3px var(--accent2)}
+.tdisp{font-size:2.4rem;font-weight:800;text-align:center;margin:8px 0;font-variant-numeric:tabular-nums}
+.tbars{display:flex;gap:6px;align-items:flex-end;height:120px}
+.tb{flex:1;text-align:center;font-size:.7rem;color:var(--muted)}
+.tb i{display:block;background:var(--accent);border-radius:6px 6px 0 0;min-height:3px;margin-bottom:4px}
+.badges{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px}
+.bdg{text-align:center;font-size:.72rem;color:var(--muted)}
+.bdg b{display:block;font-size:2rem;line-height:1.2;color:var(--text)}
+.bdg.off{opacity:.35;filter:grayscale(1)}
+.big{font-size:4.5rem;line-height:1}
+.conf{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.conf span{position:absolute;top:-30px;font-size:1.5rem;animation:fall 2.6s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+.seg{display:flex;gap:8px;margin-bottom:12px}
+.txt{width:100%;padding:11px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit;margin-bottom:8px}
+textarea.txt{height:120px;resize:none}
+.back{color:var(--accent);font-weight:700;padding:4px 0;margin-bottom:6px}
+.reader{white-space:pre-wrap;line-height:1.7}
+a.deck{text-decoration:none;color:inherit}
+mark{color:inherit;border-radius:3px;cursor:pointer;padding:0 1px}
+mark.m1{background:rgba(22,163,74,.3);border-bottom:2px solid var(--ok)}
+mark.m2{background:rgba(245,158,11,.3);border-bottom:2px dashed #d97706}
+.legend{display:flex;gap:14px;font-size:.8rem;color:var(--muted);flex-wrap:wrap;margin:6px 0 10px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.bk{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-top:1px solid var(--line);font-size:.9rem}
+.auth{position:absolute;inset:0;z-index:20;background:var(--bg);overflow-y:auto;padding:24px 18px calc(24px + env(safe-area-inset-bottom,0px))}
+.auth label.ck{display:flex;gap:8px;align-items:flex-start;font-size:.85rem;color:var(--muted);margin:4px 0 10px}
+.auth label.ck input{margin-top:3px}
+.av{width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--on);font-weight:800;margin-left:8px;vertical-align:middle}
+</style>
+</head>
+<body>
+<div id="app">
+  <header><div class="logo">🎓 The Learning Era</div><div class="pills"><span id="hStreak">🔥 0</span><span id="hXp">⭐ 0</span><button id="avatar" class="av" aria-label="Profile">?</button></div></header>
+  <div id="screens">
+    <section id="home" class="screen">
+      <h2 id="hello">Hi there 👋</h2>
+      <p class="sub">Turn your notes into a quiz and find your gaps.</p>
+      <div class="card hero">
+        <textarea id="notes" placeholder="Paste your notes here…"></textarea>
+        <div class="row"><select id="num"><option value="5">5 Qs</option><option value="8" selected>8 Qs</option><option value="10">10 Qs</option></select>
+        <select id="diff"><option>Easy</option><option selected>Medium</option><option>Hard</option></select>
+        <select id="lang"><option>English</option><option>Hindi</option><option>Marathi</option><option>Spanish</option><option>French</option></select></div>
+        <div class="row"><button class="btn white" id="gen">✨ Make my quiz</button></div>
+        <div class="row" style="margin-top:4px"><button class="link" style="color:#fff" id="demo">Try sample notes</button></div>
+        <div id="err" class="err hide" style="color:#fff"></div>
+      </div>
+      <div class="card"><div class="mnav"><b>🎯 Daily question goal</b><span><button class="x" id="qgMinus" aria-label="Lower goal">−</button><button class="x" id="qgPlus" aria-label="Raise goal">+</button></span></div><p class="sub" id="qgTxt" style="margin:6px 0"></p><div class="bar"><i id="qgBar"></i></div><button class="btn hide" id="qgChest" style="margin-top:10px">🎁 Open today’s chest</button></div>
+      <div class="card"><div class="mnav"><b>⏱ Study timer</b><span class="sub" style="margin:0" id="tToday"></span></div><div class="tdisp" id="tDisp">00:00</div><div class="row"><button class="btn" id="tToggle">Start</button><button class="btn ghost" id="tSave">Save time</button></div></div>
+      <h3 style="margin:18px 0 10px">Recent decks</h3>
+      <div id="recent"></div>
+    </section>
+    <section id="library" class="screen hide"><h2>Library</h2><p class="sub">Your quizzes and your subject books.</p><div class="seg"><button class="chip on" id="tDecks">Quiz decks</button><button class="chip" id="tSubj">📚 Subject books</button></div><div id="decks"></div><div id="subj" class="hide"></div></section>
+    <section id="progress" class="screen hide"><h2>Progress</h2><p class="sub">Your learning at a glance.</p>
+      <div class="grid"><div class="stat"><b id="sLvl">1</b><span>Level</span></div><div class="stat"><b id="sXp">0</b><span>Total XP</span></div><div class="stat"><b id="sQ">0</b><span>Quizzes</span></div><div class="stat"><b id="sAcc">0%</b><span>Accuracy</span></div></div>
+      <div class="card"><b>Last 7 days</b><div class="week" id="week" style="margin-top:10px"></div></div>
+      <div class="card"><div class="mnav"><b>🏅 Badges</b><span class="sub" style="margin:0" id="rank"></span></div><div class="badges" id="badges"></div></div>
+      <div class="card"><b>Study time (last 7 days)</b><div class="tbars" id="tbars" style="margin-top:10px"></div></div>
+      <div class="card"><b>Topics to review</b><div id="topics"></div></div>
+    </section>
+    <section id="month" class="screen hide"><h2>Monthly tracker</h2><p class="sub">Build the habit. Study a little every day.</p>
+      <div class="card"><div class="mnav"><button class="x" id="mPrev" aria-label="Previous month">◀</button><b id="mTitle"></b><button class="x" id="mNext" aria-label="Next month">▶</button></div><div class="cal" id="cal"></div><p id="mDay" class="sub" style="margin:10px 0 0"></p></div>
+      <div class="card"><b>Monthly goal</b><div class="mnav" style="margin:6px 0"><button class="x" id="gMinus" aria-label="Lower goal">−</button><span id="goalTxt"></span><button class="x" id="gPlus" aria-label="Raise goal">+</button></div><div class="bar"><i id="goalBar"></i></div></div>
+      <div class="grid"><div class="stat"><b id="mDays">0</b><span>Study days</span></div><div class="stat"><b id="mQ">0</b><span>Quizzes</span></div><div class="stat"><b id="mXp">0</b><span>XP earned</span></div><div class="stat"><b id="mAcc">0%</b><span>Accuracy</span></div><div class="stat"><b id="mTime">0 min</b><span>Study time</span></div><div class="stat"><b id="mAvg">0 min</b><span>Avg per study day</span></div></div>
+    </section>
+    <section id="pyq" class="screen hide"><h2>PYQ finder</h2><p class="sub">Paste your notes and see which topics match previous year questions.</p>
+      <div class="card"><b>1. Your PYQ bank</b><p class="sub" id="bankInfo" style="margin:4px 0 8px"></p><input class="txt" id="bLabel" placeholder="Label, e.g. 2023 Board Physics"><textarea class="txt" id="bText" placeholder="Paste previous year questions, one per line…"></textarea><button class="btn" id="bSave">Save PYQs</button><div id="bankList" style="margin-top:8px"></div></div>
+      <div class="card"><b>2. Paste your notes</b><textarea class="txt" id="pNotes" style="margin-top:8px;height:150px" placeholder="Paste the notes or chapter text here…"></textarea><button class="btn" id="pFind">🔍 Find PYQs in my notes</button><div id="pErr" class="err hide"></div></div>
+      <div id="pOut" class="hide"><h3 style="margin:6px 0">Your notes, highlighted</h3><p id="pSum" class="sub" style="margin:0"></p>
+        <div class="legend"><span><i style="background:rgba(22,163,74,.5)"></i>Matches a PYQ you saved</span><span><i style="background:rgba(245,158,11,.5)"></i>AI-predicted, not a verified PYQ</span></div>
+        <div id="pDetail" class="card hide" style="border-color:var(--accent)"></div>
+        <div id="pView" class="card reader"></div><div id="pList"></div><button class="btn" id="pPractice">🎯 Practice these topics</button></div>
+    </section>
+    <section id="profile" class="screen hide"><button class="back" id="pBack">‹ Back</button>
+      <div class="center"><div class="av" id="pAv" style="width:72px;height:72px;font-size:2rem;margin:0 auto;line-height:72px"></div><h2 id="pName"></h2><p class="sub" id="pEmail"></p></div>
+      <div class="card" id="pInfo"></div><div class="grid" id="pStats"></div>
+      <button class="btn" id="logout">Log out</button><button class="btn ghost" id="delAcc" style="margin-top:8px;color:var(--bad)">Delete account and data</button>
+    </section>
+    <section id="quiz" class="screen hide">
+      <div class="qtop"><button class="x" id="quit" aria-label="Close">✕</button><div class="bar"><i id="prog"></i></div><span id="count" class="sub" style="margin:0"></span></div>
+      <span id="topic" class="topic"></span><p id="qtext" class="q"></p>
+      <div id="opts"></div>
+      <div class="chips" id="chips"><span>How sure?</span><button class="chip on" id="cSure">Sure</button><button class="chip" id="cGuess">Guess</button></div>
+      <div class="qbot"><button class="btn" id="check" disabled>Check</button></div>
+      <div id="sheet" class="hide"><h3 id="sh"></h3><p id="se"></p><div id="so" class="simple hide"></div><button class="link" id="simple">💡 Explain it simply</button><button class="btn" id="next" style="margin-top:6px">Continue</button></div>
+    </section>
+    <section id="result" class="screen hide center">
+      <h2>Quiz complete 🎉</h2>
+      <svg class="ring" viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="none" stroke="var(--line)" stroke-width="10"/><circle id="arc" cx="60" cy="60" r="52" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" stroke-dasharray="327" stroke-dashoffset="327" transform="rotate(-90 60 60)" style="transition:stroke-dashoffset .9s"/><text id="pct" x="60" y="69" text-anchor="middle">0%</text></svg>
+      <p id="rsum" class="sub"></p><p id="insight" class="sub" style="color:var(--text)"></p>
+      <div class="card" style="text-align:left"><b>Topic mastery</b><div id="mastery"></div></div>
+      <button class="btn" id="fix">🎯 Fix my gaps</button>
+      <div class="row"><button class="btn ghost" id="retry">Retake</button><button class="btn ghost" id="done">Done</button></div>
+    </section>
+  </div>
+  <nav id="tabs"><button data-t="home" class="on"><span>🏠</span>Home</button><button data-t="library"><span>📚</span>Library</button><button data-t="pyq"><span>🔍</span>PYQs</button><button data-t="month"><span>🗓</span>Month</button><button data-t="progress"><span>📈</span>Progress</button></nav>
+  <div id="auth" class="auth"><div style="max-width:420px;margin:0 auto">
+    <div class="center"><div class="big">🎓</div><h2 style="margin:6px 0 2px">The Learning Era</h2><p class="sub">Learn. Test. Grow.</p></div>
+    <div id="aWelcome" class="center"><h3 style="margin:16px 0 4px;font-size:1.3rem">Study smarter, not longer</h3><p class="sub">Turn your notes into quizzes, find your gaps, and track your progress every day.</p>
+      <div class="card" style="text-align:left"><div class="bk" style="border:0">✨ Notes to instant quizzes</div><div class="bk">🎯 Daily goals, streaks and rewards</div><div class="bk">🔍 PYQ finder for exam topics</div><div class="bk">📚 Subject books and a study timer</div></div>
+      <button class="btn" id="wLogin">Log in</button><button class="btn ghost" id="wSign" style="margin-top:8px">Create account</button></div>
+    <div id="aSeg" class="hide"><button class="back" id="aBack">‹ Welcome</button><div class="seg"><button class="chip on" id="aLogin">Log in</button><button class="chip" id="aSign">Sign up</button></div></div>
+    <form id="fLogin" class="hide" novalidate>
+      <input class="txt" id="lEmail" placeholder="Your name" autocomplete="username" aria-label="Name">
+      <input class="txt" id="lPw" type="password" placeholder="Password" autocomplete="current-password" aria-label="Password">
+      <label class="ck"><input type="checkbox" id="lKeep"><span>Keep me signed in on this device</span></label>
+      <div id="lErr" class="err hide"></div>
+      <button class="btn" type="submit" style="margin-top:8px">Log in</button>
+    </form>
+    <form id="fSign" class="hide" novalidate>
+      <input class="txt" id="sName" placeholder="Your name (used to log in)" autocomplete="username" aria-label="Name">
+      
+      <input class="txt" id="sPw" type="password" placeholder="Create a password (min 6 characters)" autocomplete="new-password" aria-label="Password">
+      
+      <select class="txt" id="sGrade" aria-label="Class or level"><option>Class 6-8</option><option>Class 9-10</option><option selected>Class 11-12</option><option>Undergraduate</option><option>Postgraduate</option><option>Other</option></select>
+      
+      
+      
+      <div id="sErr" class="err hide"></div>
+      <button class="btn" type="submit" style="margin-top:8px">Create account</button>
+      <p class="sub" style="margin-top:10px;font-size:.8rem">Your progress is tracked on this device only. Please don’t reuse an important password.</p>
+    </form>
+  </div></div>
+  <div id="cele" class="overlay hide" style="z-index:12;padding:24px;text-align:center"><div class="conf" id="conf"></div><div class="big" id="ceEmoji">🎉</div><h2 id="ceTitle" style="margin:0"></h2><p id="ceMsg" class="sub" style="margin:0"></p><div id="ceBadges" style="font-weight:700"></div><button class="btn" id="ceChest" style="max-width:300px">🎁 Open mystery chest</button><button class="btn ghost" id="ceClose" style="max-width:300px">Continue</button></div>
+  <div id="load" class="overlay hide"><div class="spin"></div><b id="lmsg">Reading your notes…</b></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const SAMPLE = "Photosynthesis is the process by which plants, algae and some bacteria convert light energy into chemical energy stored in glucose. It takes place in chloroplasts, which contain the green pigment chlorophyll. The light-dependent reactions occur in the thylakoid membranes, where light splits water molecules, releasing oxygen and producing ATP and NADPH. The Calvin cycle occurs in the stroma and uses ATP and NADPH to fix carbon dioxide into glucose. The overall equation is 6CO2 + 6H2O + light → C6H12O6 + 6O2. Factors that affect the rate include light intensity, carbon dioxide concentration and temperature.";
+let S = {decks: [], xp: 0, quizzes: 0, c: 0, n: 0, topics: {}, days: [], log: {}, goal: 15, qGoal: 20, goalDays: [], badges: [], perfect: false, subjects: [], pyqs: []};
+const DEF = JSON.stringify(S); let uid = null, me = null;
+const save = () => { if (!uid) return; try { localStorage.setItem("studyloop_data_" + uid, JSON.stringify(S)); } catch (e) {} };
+let sample = null, quiz = [], notesText = "", recap = "", curDeck = null, i = 0, sel = -1, conf = "sure", answers = [], score = 0, gain = 0, streakQ = 0, locked = false;
+(async () => { try { sample = await claude.use("sample"); } catch (e) {} })();
+
+const key = d => d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+function streakDays(){ const set = new Set(S.days); const d = new Date(); let n = 0; if (!set.has(key(d))) d.setDate(d.getDate() - 1); while (set.has(key(d))) { n++; d.setDate(d.getDate() - 1); } return n; }
+function header(){ $("hStreak").textContent = "🔥 " + streakDays(); $("hXp").textContent = "⭐ " + S.xp; }
+function go(n){
+  ["home","library","pyq","month","progress","profile","quiz","result"].forEach(x => $(x).classList.toggle("hide", x !== n));
+  $("tabs").classList.toggle("hide", n === "quiz");
+  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.t === n));
+  $("screens").scrollTop = 0; header();
+  if (n === "home") { renderRecent(); updateToday(); updateGoal(); } if (n === "library") renderLib(); if (n === "progress") renderProgress(); if (n === "month") renderMonth(); if (n === "pyq") renderBank(); if (n === "profile") renderProfile();
+}
+document.querySelectorAll("#tabs button").forEach(b => b.onclick = () => go(b.dataset.t));
+
+function deckRow(d, full){
+  const el = document.createElement("div"); el.className = "card deck";
+  const ic = document.createElement("div"); ic.className = "ic"; ic.textContent = "📝";
+  const t = document.createElement("div"); t.className = "t";
+  const b = document.createElement("b"); b.textContent = d.title;
+  const s = document.createElement("small"); s.textContent = d.quiz.length + " questions · " + d.date;
+  t.append(b, s); el.append(ic, t);
+  el.onclick = () => { curDeck = d; quiz = d.quiz; notesText = d.notes || ""; recap = ""; start(); };
+  if (full) { const x = document.createElement("button"); x.className = "x"; x.textContent = "🗑"; x.onclick = e => { e.stopPropagation(); S.decks = S.decks.filter(k => k.id !== d.id); save(); renderDecks(); }; el.append(x); }
+  return el;
+}
+function empty(box, t){ const p = document.createElement("p"); p.className = "sub"; p.textContent = t; box.appendChild(p); }
+function renderRecent(){ const b = $("recent"); b.innerHTML = ""; if (!S.decks.length) return empty(b, "No decks yet. Make your first quiz above!"); S.decks.slice(0, 3).forEach(d => b.appendChild(deckRow(d, false))); }
+function renderDecks(){ const b = $("decks"); b.innerHTML = ""; if (!S.decks.length) return empty(b, "Nothing saved yet."); S.decks.forEach(d => b.appendChild(deckRow(d, true))); }
+
+function renderProgress(){ renderBars(); renderBadges();
+  $("sLvl").textContent = Math.floor(S.xp / 100) + 1; $("sXp").textContent = S.xp; $("sQ").textContent = S.quizzes;
+  $("sAcc").textContent = (S.n ? Math.round(S.c / S.n * 100) : 0) + "%";
+  const w = $("week"); w.innerHTML = ""; const set = new Set(S.days);
+  for (let k = 6; k >= 0; k--) { const d = new Date(); d.setDate(d.getDate() - k); const c = document.createElement("div"); c.className = "day" + (set.has(key(d)) ? " on" : ""); const f = document.createElement("i"); const l = document.createElement("span"); l.textContent = "SMTWTFS"[d.getDay()]; c.append(f, l); w.appendChild(c); }
+  const tb = $("topics"); tb.innerHTML = "";
+  const ts = Object.entries(S.topics).sort((a, b) => a[1].c / a[1].n - b[1].c / b[1].n).slice(0, 6);
+  if (!ts.length) return empty(tb, "Take a quiz to see your topics.");
+  ts.forEach(([t, v]) => meter(tb, t, Math.round(v.c / v.n * 100)));
+}
+function meter(box, t, p){ const d = document.createElement("div"); d.className = "m"; const l = document.createElement("span"); l.textContent = t + " · " + p + "%"; const bar = document.createElement("div"); bar.className = "bar"; const f = document.createElement("i"); f.style.width = p + "%"; if (p < 70) f.className = "low"; bar.appendChild(f); d.append(l, bar); box.appendChild(d); }
+
+let mView = new Date(); mView.setDate(1); let mSel = null;
+function renderMonth(){
+  const y = mView.getFullYear(), mo = mView.getMonth();
+  $("mTitle").textContent = mView.toLocaleDateString(undefined, {month: "long", year: "numeric"});
+  const first = new Date(y, mo, 1).getDay(), dim = new Date(y, mo + 1, 0).getDate(), g = $("cal");
+  g.innerHTML = "";
+  "SMTWTFS".split("").forEach(l => { const h = document.createElement("div"); h.className = "ch"; h.textContent = l; g.appendChild(h); });
+  for (let k = 0; k < first; k++) g.appendChild(document.createElement("div"));
+  const set = new Set(S.days), todayK = key(new Date()); let days = 0, qz = 0, xp = 0, c = 0, n = 0, sec = 0;
+  for (let d = 1; d <= dim; d++) {
+    const k = key(new Date(y, mo, d)), lg = S.log[k], studied = set.has(k) || !!lg;
+    if (studied) days++; if (lg) { qz += lg.q; xp += lg.xp; c += lg.c; n += lg.n; sec += lg.sec || 0; }
+    const cell = document.createElement("button");
+    cell.className = "cd" + (studied ? " on" : "") + (lg && (lg.q >= 3 || (lg.sec || 0) >= 1800) ? " hi" : "") + (k === todayK ? " today" : "") + (k === mSel ? " sel" : "");
+    cell.textContent = d + (S.goalDays.includes(k) ? "★" : ""); cell.onclick = () => { mSel = k; renderMonth(); };
+    g.appendChild(cell);
+  }
+  const dl = mSel && S.log[mSel];
+  $("mDay").textContent = !mSel ? "Tap a day to see details. Darker days mean 3+ quizzes or 30+ min." : dl ? fmtMin(dl.sec || 0) + " studied" + (dl.q ? " · " + dl.q + " quiz" + (dl.q > 1 ? "zes" : "") + " · " + Math.round(dl.c / dl.n * 100) + "% accuracy · +" + dl.xp + " XP" : "") : set.has(mSel) ? "You studied this day." : "No study on this day.";
+  $("mDays").textContent = days; $("mQ").textContent = qz; $("mXp").textContent = xp; $("mAcc").textContent = (n ? Math.round(c / n * 100) : 0) + "%";
+  $("mTime").textContent = fmtMin(sec); $("mAvg").textContent = fmtMin(days ? sec / days : 0);
+  $("goalTxt").textContent = days + " / " + S.goal + " study days";
+  $("goalBar").style.width = Math.min(100, days / S.goal * 100) + "%";
+}
+$("mPrev").onclick = () => { mView.setMonth(mView.getMonth() - 1); mSel = null; renderMonth(); };
+$("mNext").onclick = () => { mView.setMonth(mView.getMonth() + 1); mSel = null; renderMonth(); };
+$("gMinus").onclick = () => { S.goal = Math.max(1, S.goal - 1); save(); renderMonth(); };
+$("gPlus").onclick = () => { S.goal = Math.min(31, S.goal + 1); save(); renderMonth(); };
+
+let qStart = Date.now(), tRun = false, tStart = 0, tAcc = 0, tIv = null;
+function fmtMin(sec){ const m = Math.round(sec / 60); if (sec > 0 && m === 0) return "<1 min"; const h = Math.floor(m / 60); return h ? h + "h " + (m % 60) + "m" : m + " min"; }
+function addTime(sec){ const t = key(new Date()); if (!S.days.includes(t)) S.days.push(t); const L = S.log[t] = S.log[t] || {q: 0, xp: 0, c: 0, n: 0}; L.sec = (L.sec || 0) + sec; save(); }
+function updateToday(){ const L = S.log[key(new Date())]; $("tToday").textContent = "Today: " + fmtMin(L && L.sec ? L.sec : 0); }
+function tNow(){ return tAcc + (tRun ? Date.now() - tStart : 0); }
+function tShow(){ const s = Math.floor(tNow() / 1000), h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60, p = v => String(v).padStart(2, "0"); $("tDisp").textContent = (h ? h + ":" : "") + p(m) + ":" + p(x); $("tToggle").textContent = tRun ? "Pause" : (tAcc ? "Resume" : "Start"); }
+$("tToggle").onclick = () => { if (!tRun) { tRun = true; tStart = Date.now(); tIv = setInterval(tShow, 1000); } else { tAcc += Date.now() - tStart; tRun = false; clearInterval(tIv); } tShow(); };
+$("tSave").onclick = () => { const ms = tNow(); if (ms < 5000) return alert("Study for at least a few seconds first."); addTime(Math.round(ms / 1000)); const nb = newBadges(); if (nb.length) celebrate({badges: nb}); tRun = false; clearInterval(tIv); tAcc = 0; tShow(); updateToday(); header(); };
+function renderBars(){
+  const b = $("tbars"); b.innerHTML = ""; const v = [];
+  for (let k = 6; k >= 0; k--) { const d = new Date(); d.setDate(d.getDate() - k); const L = S.log[key(d)]; v.push({d, sec: L && L.sec ? L.sec : 0}); }
+  const max = Math.max(600, ...v.map(x => x.sec));
+  v.forEach(x => { const c = document.createElement("div"); c.className = "tb"; const t = document.createElement("div"); t.textContent = x.sec ? Math.round(x.sec / 60) + "m" : ""; const bar = document.createElement("i"); bar.style.height = Math.round(x.sec / max * 80) + "px"; const l = document.createElement("div"); l.textContent = "SMTWTFS"[x.d.getDay()]; c.append(t, bar, l); b.appendChild(c); });
+}
+
+const BADGES = [
+  {id: "first", e: "🎯", n: "Goal Getter", d: "Hit your daily goal once", ok: () => S.goalDays.length >= 1},
+  {id: "g3", e: "🥉", n: "3 Goal Days", d: "Hit the goal on 3 days", ok: () => S.goalDays.length >= 3},
+  {id: "g7", e: "🥈", n: "7 Goal Days", d: "Hit the goal on 7 days", ok: () => S.goalDays.length >= 7},
+  {id: "g30", e: "🏆", n: "Champion", d: "Hit the goal on 30 days", ok: () => S.goalDays.length >= 30},
+  {id: "cent", e: "💯", n: "Century", d: "Answer 100 questions", ok: () => S.n >= 100},
+  {id: "perf", e: "🌟", n: "Perfectionist", d: "Score 100% on a quiz", ok: () => S.perfect},
+  {id: "q5", e: "📚", n: "Bookworm", d: "Finish 5 quizzes", ok: () => S.quizzes >= 5},
+  {id: "focus", e: "⏳", n: "Focus Hero", d: "Study 5 hours in total", ok: () => totalSec() >= 18000},
+  {id: "wk", e: "🔥", n: "Week Warrior", d: "7-day study streak", ok: () => streakDays() >= 7}];
+const QUOTES = ["Small steps every day add up.", "You’re building a powerful habit.", "Consistency beats intensity.", "Future you says thanks.", "Mistakes are proof you’re learning."];
+function totalSec(){ return Object.values(S.log).reduce((a, l) => a + (l.sec || 0), 0); }
+function newBadges(){ const got = []; BADGES.forEach(b => { if (!S.badges.includes(b.id) && b.ok()) { S.badges.push(b.id); got.push(b); } }); if (got.length) save(); return got; }
+function rank(){ const l = Math.floor(S.xp / 100) + 1; return l >= 12 ? "Legend" : l >= 8 ? "Genius" : l >= 5 ? "Brainiac" : l >= 3 ? "Scholar" : "Rookie"; }
+function renderBadges(){
+  $("rank").textContent = "Rank: " + rank() + " · " + S.badges.length + "/" + BADGES.length;
+  const g = $("badges"); g.innerHTML = "";
+  BADGES.forEach(b => { const d = document.createElement("div"); d.className = "bdg" + (S.badges.includes(b.id) ? "" : " off"); const e = document.createElement("b"); e.textContent = b.e; const n = document.createElement("div"); n.textContent = b.n; const s = document.createElement("small"); s.textContent = b.d; d.append(e, n, s); g.appendChild(d); });
+}
+function updateGoal(){
+  const L = S.log[key(new Date())] || {}, n = L.n || 0, g = S.qGoal;
+  $("qgTxt").textContent = n >= g ? "Goal complete! " + n + " questions today 🎉" : n + " / " + g + " questions · answer " + (g - n) + " more to unlock a 🎁 chest";
+  $("qgBar").style.width = Math.min(100, n / g * 100) + "%";
+  $("qgChest").classList.toggle("hide", !(L.goal && !L.chest));
+}
+$("qgMinus").onclick = () => { S.qGoal = Math.max(5, S.qGoal - 5); save(); updateGoal(); };
+$("qgPlus").onclick = () => { S.qGoal = Math.min(100, S.qGoal + 5); save(); updateGoal(); };
+function openChest(){
+  const L = S.log[key(new Date())]; if (!L || L.chest) return null; L.chest = true;
+  const r = Math.random(), xp = r < 0.1 ? 100 : r < 0.4 ? 40 : r < 0.7 ? 25 : 15; S.xp += xp; save(); header();
+  return {xp, msg: QUOTES[Math.floor(Math.random() * QUOTES.length)]};
+}
+$("qgChest").onclick = () => { const c = openChest(); if (c) { celebrate({chest: c}); updateGoal(); } };
+$("ceChest").onclick = () => { const c = openChest(); if (c) celebrate({chest: c}); };
+$("ceClose").onclick = () => { $("cele").classList.add("hide"); updateGoal(); };
+function celebrate(o){
+  const L = S.log[key(new Date())] || {};
+  $("ceEmoji").textContent = o.chest ? "🎁" : o.goal ? "🎉" : "🏅";
+  $("ceTitle").textContent = o.chest ? "+" + o.chest.xp + " XP!" : o.goal ? "Daily goal complete!" : "New badge unlocked!";
+  $("ceMsg").textContent = o.chest ? o.chest.msg : o.goal ? "+50 XP bonus. You studied smart today." : "Keep it up!";
+  $("ceBadges").textContent = (o.badges || []).map(b => b.e + " " + b.n).join("   ");
+  $("ceChest").classList.toggle("hide", !(!o.chest && L.goal && !L.chest));
+  const c = $("conf"); c.innerHTML = ""; const em = ["🎉", "✨", "⭐", "🎊"];
+  for (let k = 0; k < 28; k++) { const s = document.createElement("span"); s.textContent = em[k % 4]; s.style.left = Math.random() * 95 + "%"; s.style.animationDelay = Math.random() * 1.2 + "s"; c.appendChild(s); }
+  $("cele").classList.remove("hide");
+}
+function afterQuiz(){
+  const t = key(new Date()), L = S.log[t]; let goal = false;
+  if (L && !L.goal && (L.n || 0) >= S.qGoal) { L.goal = true; if (!S.goalDays.includes(t)) S.goalDays.push(t); S.xp += 50; goal = true; }
+  if (score === quiz.length) S.perfect = true;
+  const nb = newBadges(); save(); header();
+  if (goal || nb.length) setTimeout(() => celebrate({goal, badges: nb}), 700);
+}
+
+let libTab = "decks", subjId = null, bookId = null, secIdx = null;
+const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+const PRE = [["🧮", "Math"], ["🔬", "Science"], ["📖", "English"], ["🏛️", "History"], ["💻", "Computer"]];
+function chunk(t){
+  const parts = [];
+  t.split(/\n\s*\n/).forEach(p => { p = p.trim(); if (!p) return; if (p.length <= 2500) parts.push(p); else { let cur = ""; p.split(/(?<=[.!?])\s+/).forEach(s => { if (cur.length + s.length > 2500 && cur) { parts.push(cur); cur = s; } else cur += (cur ? " " : "") + s; }); if (cur) parts.push(cur); } });
+  const out = []; let cur = "";
+  parts.forEach(p => { if (cur && cur.length + p.length > 2500) { out.push(cur); cur = p; } else cur += (cur ? "\n\n" : "") + p; });
+  if (cur) out.push(cur); return out;
+}
+function renderLib(){
+  $("tDecks").classList.toggle("on", libTab === "decks"); $("tSubj").classList.toggle("on", libTab === "subjects");
+  $("decks").classList.toggle("hide", libTab !== "decks"); $("subj").classList.toggle("hide", libTab !== "subjects");
+  if (libTab === "decks") renderDecks(); else renderSubj();
+}
+$("tDecks").onclick = () => { libTab = "decks"; renderLib(); };
+$("tSubj").onclick = () => { libTab = "subjects"; renderLib(); };
+function addSubject(name, e){ name = name.trim(); if (!name || S.subjects.some(s => s.name.toLowerCase() === name.toLowerCase())) return; S.subjects.push({id: Date.now(), name, e: e || "📘", books: []}); save(); renderSubj(); }
+function backBtn(t, fn){ const b = el("button", "back", "‹ " + t); b.onclick = () => { fn(); renderSubj(); }; return b; }
+function renderSubj(){
+  const box = $("subj"); box.innerHTML = ""; $("screens").scrollTop = 0;
+  const sub = S.subjects.find(s => s.id === subjId);
+  if (!sub) { subjId = null; bookId = null; secIdx = null; }
+  if (!subjId) {
+    if (!S.subjects.length) box.appendChild(el("p", "sub", "Add a subject, then add its books or notes. You can quiz yourself on any section."));
+    S.subjects.forEach(s => {
+      const c = el("div", "card deck"); c.appendChild(el("div", "ic", s.e || "📘"));
+      const t = el("div", "t"); t.append(el("b", null, s.name), el("small", null, s.books.length + " book" + (s.books.length === 1 ? "" : "s"))); c.appendChild(t);
+      c.onclick = () => { subjId = s.id; renderSubj(); };
+      const x = el("button", "x", "🗑"); x.onclick = e => { e.stopPropagation(); if (confirm("Delete " + s.name + " and its books?")) { S.subjects = S.subjects.filter(k => k.id !== s.id); save(); renderSubj(); } }; c.appendChild(x);
+      box.appendChild(c);
+    });
+    const f = el("div", "card"); f.appendChild(el("b", null, "Add a subject"));
+    const inp = el("input", "txt"); inp.placeholder = "e.g. Physics"; inp.style.marginTop = "8px";
+    const go1 = el("button", "btn", "Add subject"); go1.onclick = () => addSubject(inp.value);
+    f.append(inp, go1);
+    const ch = el("div", "row");
+    PRE.filter(p => !S.subjects.some(s => s.name === p[1])).forEach(p => { const b = el("button", "chip", p[0] + " " + p[1]); b.onclick = () => addSubject(p[1], p[0]); ch.appendChild(b); });
+    f.appendChild(ch); box.appendChild(f); return;
+  }
+  if (!bookId) {
+    box.appendChild(backBtn("All subjects", () => { subjId = null; }));
+    box.appendChild(el("h3", null, (sub.e || "📘") + " " + sub.name));
+    if (!sub.books.length) box.appendChild(el("p", "sub", "No books yet. Add one below."));
+    sub.books.forEach(b => {
+      const isLink = !b.text && b.url, c = isLink ? el("a", "card deck") : el("div", "card deck");
+      if (isLink) { c.href = b.url; c.target = "_blank"; c.rel = "noopener noreferrer"; } else c.onclick = () => { bookId = b.id; secIdx = null; renderSubj(); };
+      c.appendChild(el("div", "ic", isLink ? "🔗" : "📕"));
+      const t = el("div", "t"); t.append(el("b", null, b.title), el("small", null, isLink ? "Opens the link" : chunk(b.text).length + " sections")); c.appendChild(t);
+      const x = el("button", "x", "🗑"); x.onclick = e => { e.preventDefault(); e.stopPropagation(); sub.books = sub.books.filter(k => k.id !== b.id); save(); renderSubj(); }; c.appendChild(x);
+      box.appendChild(c);
+    });
+    const f = el("div", "card"); f.appendChild(el("b", null, "Add a book or notes"));
+    const ti = el("input", "txt"); ti.placeholder = "Book or chapter title"; ti.style.marginTop = "8px";
+    const fi = el("input", "txt"); fi.type = "file"; fi.accept = ".txt,.md,.text,.csv";
+    const ta = el("textarea", "txt"); ta.placeholder = "Paste the text here, or choose a .txt file above";
+    const ur = el("input", "txt"); ur.placeholder = "Or paste a link to an online book (optional)";
+    fi.onchange = () => { const fl = fi.files[0]; if (!fl) return; const r = new FileReader(); r.onload = () => { ta.value = String(r.result).slice(0, 60000); if (!ti.value) ti.value = fl.name.replace(/\.[^.]+$/, ""); }; r.readAsText(fl); };
+    const sv = el("button", "btn", "Save to " + sub.name);
+    sv.onclick = () => {
+      const title = ti.value.trim(), text = ta.value.trim().slice(0, 60000), url = ur.value.trim();
+      if (!title) return alert("Please add a title.");
+      if (!text && !url) return alert("Add some text, a .txt file, or a link.");
+      if (url && !/^https?:\/\//i.test(url)) return alert("Links must start with http:// or https://");
+      sub.books.push({id: Date.now(), title, text, url}); save(); renderSubj();
+    };
+    f.append(ti, fi, ta, ur, sv, el("p", "sub", "Have a PDF? Copy and paste the chapter text for now. PDF upload isn’t supported yet.")); box.appendChild(f); return;
+  }
+  const book = sub.books.find(b => b.id === bookId);
+  if (!book) { bookId = null; return renderSubj(); }
+  const secs = chunk(book.text || "");
+  if (secIdx == null) {
+    box.appendChild(backBtn(sub.name, () => { bookId = null; }));
+    box.appendChild(el("h3", null, book.title));
+    secs.forEach((s, k) => { const c = el("div", "card deck"); c.appendChild(el("div", "ic", "📄")); const t = el("div", "t"); t.append(el("b", null, "Section " + (k + 1)), el("small", null, s.slice(0, 70).replace(/\s+/g, " ") + "…")); c.appendChild(t); c.onclick = () => { secIdx = k; renderSubj(); }; box.appendChild(c); });
+    return;
+  }
+  box.appendChild(backBtn("Sections", () => { secIdx = null; }));
+  box.appendChild(el("h3", null, book.title + " · Section " + (secIdx + 1) + " of " + secs.length));
+  box.appendChild(el("div", "card reader", secs[secIdx]));
+  const q = el("button", "btn", "✨ Quiz this section"); q.onclick = () => quizSection(secs[secIdx], sub.name); box.appendChild(q);
+  const r = el("div", "row");
+  const pv = el("button", "btn ghost", "‹ Previous"), nx = el("button", "btn ghost", "Next ›");
+  pv.disabled = secIdx === 0; nx.disabled = secIdx === secs.length - 1;
+  pv.onclick = () => { secIdx--; renderSubj(); }; nx.onclick = () => { secIdx++; renderSubj(); };
+  r.append(pv, nx); box.appendChild(r);
+}
+async function quizSection(text, subName){
+  if (!sample) return alert("AI isn’t available in this view. Open the app in Claude and allow access.");
+  notesText = text; showErr("");
+  const r = await build("", $("num").value, $("diff").value);
+  if (!r) return alert($("err").textContent || "Couldn’t make the quiz. Please try again.");
+  quiz = r.quiz; recap = "";
+  curDeck = {id: Date.now(), title: subName + ": " + r.title, quiz: r.quiz, notes: text.slice(0, 12000), date: new Date().toLocaleDateString()};
+  S.decks.unshift(curDeck); S.decks = S.decks.slice(0, 20); save(); start();
+}
+
+let pRes = null;
+const perr = t => { const e = $("pErr"); e.textContent = t; e.classList.toggle("hide", !t); };
+function parseQs(t){ return t.split(/\n+/).map(l => l.replace(/^\s*(?:Q?\s*\d+\s*[\).:\-]|[-•*])\s*/i, "").trim()).filter(l => l.length >= 10); }
+function renderBank(){
+  const n = S.pyqs.reduce((a, b) => a + b.qs.length, 0);
+  $("bankInfo").textContent = n ? n + " questions saved in " + S.pyqs.length + " set" + (S.pyqs.length > 1 ? "s" : "") + "." : "Nothing saved yet. Add past papers for exact matches.";
+  const l = $("bankList"); l.innerHTML = "";
+  S.pyqs.forEach(b => { const r = el("div", "bk"); r.appendChild(el("span", null, b.label + " · " + b.qs.length + " Qs")); const x = el("button", "x", "🗑"); x.onclick = () => { S.pyqs = S.pyqs.filter(k => k.id !== b.id); save(); renderBank(); }; r.appendChild(x); l.appendChild(r); });
+}
+$("bSave").onclick = () => {
+  const qs = parseQs($("bText").value); if (!qs.length) return alert("Paste at least one question (one per line).");
+  S.pyqs.push({id: Date.now(), label: $("bLabel").value.trim() || "My PYQs", qs: qs.slice(0, 150)});
+  save(); $("bText").value = ""; $("bLabel").value = ""; renderBank();
+};
+$("pFind").onclick = async () => {
+  const notes = $("pNotes").value.trim().slice(0, 12000);
+  if (notes.length < 80) return perr("Paste a few more sentences of notes first.");
+  if (!sample) return perr("AI isn’t available in this view. Open the app in Claude and allow access.");
+  perr(""); const use = []; S.pyqs.forEach(b => b.qs.forEach(q => use.push({label: b.label, q: q.slice(0, 220)}))); use.splice(60);
+  const prompt = "You are an exam-prep assistant. NOTES:\n" + notes + "\n\nPYQ LIST (numbered from 0):\n" + (use.length ? use.map((u, k) => k + ". " + u.q).join("\n") : "(none)") +
+    "\n\nTask 1: for each PYQ that relates to a topic covered in the notes, add an item to matches with pyq (its number) and snippet (an EXACT verbatim substring copied from the notes, 20-200 characters, the passage most relevant to that question). Skip PYQs the notes don’t cover. Task 2: list up to 6 likely exam-worthy points in the notes (definitions, formulas, key processes) as likely items with snippet (EXACT verbatim substring, 20-200 characters), question (a likely exam question) and why (short reason). These are predictions, not real past questions. Return ONLY JSON, no markdown: {\"matches\":[{\"pyq\":0,\"snippet\":\"...\"}],\"likely\":[{\"snippet\":\"...\",\"question\":\"...\",\"why\":\"...\"}]}";
+  $("lmsg").textContent = "Matching your notes with PYQs…"; $("load").classList.remove("hide");
+  try {
+    const out = await sample.json(prompt);
+    const ms = ((out && out.matches) || []).filter(m => Number.isInteger(m.pyq) && use[m.pyq] && m.snippet).map(m => ({snippet: m.snippet, label: use[m.pyq].label, question: use[m.pyq].q}));
+    const lk = ((out && out.likely) || []).filter(l => l.snippet && l.question);
+    pRes = {notes, matches: ms, likely: lk, banked: use.length}; renderPyq();
+  } catch (e) { perr(e && e.code === "not_granted" ? "Access to AI was declined." : e && e.code === "rate_limited" ? "Too many requests. Wait a moment and retry." : "Couldn’t analyse the notes. Try shorter notes."); }
+  finally { $("load").classList.add("hide"); }
+};
+function renderPyq(){
+  const {notes, matches, likely, banked} = pRes, ranges = [], lc = notes.toLowerCase();
+  const locate = sn => { let i = notes.indexOf(sn); if (i < 0) { i = lc.indexOf(sn.toLowerCase()); } if (i < 0) { i = lc.indexOf(sn.toLowerCase().slice(0, 40)); } return i < 0 ? null : [i, Math.min(notes.length, i + sn.length)]; };
+  const free = r => !ranges.some(x => r[0] < x.e && r[1] > x.s);
+  matches.forEach(m => { const r = locate(m.snippet); if (r && free(r)) ranges.push({s: r[0], e: r[1], t: "m1", info: m}); });
+  likely.forEach(l => { const r = locate(l.snippet); if (r && free(r)) ranges.push({s: r[0], e: r[1], t: "m2", info: l}); });
+  ranges.sort((a, b) => a.s - b.s);
+  const view = $("pView"); view.innerHTML = ""; let pos = 0;
+  ranges.forEach(r => { if (r.s > pos) view.appendChild(document.createTextNode(notes.slice(pos, r.s))); const mk = el("mark", r.t, notes.slice(r.s, r.e)); mk.onclick = () => showDetail(r); view.appendChild(mk); pos = r.e; });
+  if (pos < notes.length) view.appendChild(document.createTextNode(notes.slice(pos)));
+  $("pSum").textContent = matches.length + " PYQ match" + (matches.length === 1 ? "" : "es") + " · " + likely.length + " AI-predicted point" + (likely.length === 1 ? "" : "s") + (banked ? "" : " · Add PYQs above for exact matches.") + " Tap a highlight for details.";
+  const list = $("pList"); list.innerHTML = "";
+  matches.forEach(m => { const c = el("div", "card"); const b = el("b", null, m.question); b.style.display = "block"; c.append(el("small", null, "📌 PYQ · " + m.label), b); list.appendChild(c); });
+  likely.forEach(l => { const c = el("div", "card"); const b = el("b", null, l.question); b.style.display = "block"; c.append(el("small", null, "🤖 Likely question (prediction)"), b); list.appendChild(c); });
+  $("pDetail").classList.add("hide"); $("pOut").classList.remove("hide"); $("pOut").scrollIntoView({behavior: "smooth"});
+}
+function showDetail(r){
+  const d = $("pDetail"); d.innerHTML = "";
+  if (r.t === "m1") d.append(el("small", null, "📌 Matches your PYQ · " + r.info.label), el("p", null, r.info.question));
+  else d.append(el("small", null, "🤖 AI-predicted exam question"), el("p", null, r.info.question), el("small", null, r.info.why || ""));
+  d.classList.remove("hide");
+}
+$("pPractice").onclick = async () => {
+  if (!pRes) return;
+  const items = (pRes.matches.length ? pRes.matches.map(m => m.question) : pRes.likely.map(l => l.question)).slice(0, 8);
+  if (!items.length) return alert("No matched topics to practise yet.");
+  notesText = pRes.notes; showErr("");
+  const r = await build("Write questions in the style of these exam questions and on the same topics: " + items.join(" | ") + ".", $("num").value, "Medium");
+  if (!r) return alert($("err").textContent || "Couldn’t make the quiz. Please try again.");
+  quiz = r.quiz; recap = "";
+  curDeck = {id: Date.now(), title: "PYQ practice: " + r.title, quiz: r.quiz, notes: pRes.notes, date: new Date().toLocaleDateString()};
+  S.decks.unshift(curDeck); S.decks = S.decks.slice(0, 20); save(); start();
+};
+
+const U_KEY = "studyloop_users", SES_KEY = "studyloop_session";
+let fails = 0, lockUntil = 0;
+const getUsers = () => { try { return JSON.parse(localStorage.getItem(U_KEY) || "[]"); } catch (e) { return []; } };
+const putUsers = u => { try { localStorage.setItem(U_KEY, JSON.stringify(u)); return true; } catch (e) { return false; } };
+const toHex = b => Array.from(b).map(x => x.toString(16).padStart(2, "0")).join("");
+const fromHex = h => new Uint8Array(h.match(/.{2}/g).map(x => parseInt(x, 16)));
+async function hashPw(pw, saltHex){
+  const k = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveBits"]);
+  const bits = await crypto.subtle.deriveBits({name: "PBKDF2", salt: fromHex(saltHex), iterations: 150000, hash: "SHA-256"}, k, 256);
+  return toHex(new Uint8Array(bits));
+}
+const aerr = (id, t) => { const e = $(id); e.textContent = t; e.classList.toggle("hide", !t); };
+function setAuth(m){ $("aWelcome").classList.toggle("hide", m !== "welcome"); $("aSeg").classList.toggle("hide", m === "welcome"); $("aLogin").classList.toggle("on", m === "login"); $("aSign").classList.toggle("on", m === "sign"); $("fLogin").classList.toggle("hide", m !== "login"); $("fSign").classList.toggle("hide", m !== "sign"); }
+$("aLogin").onclick = () => setAuth("login"); $("aSign").onclick = () => setAuth("sign");
+$("aBack").onclick = () => setAuth("welcome"); $("wLogin").onclick = () => setAuth("login"); $("wSign").onclick = () => setAuth("sign");
+function setHello(){ const h = new Date().getHours(); $("hello").textContent = (h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening") + (me ? ", " + me.name.trim().split(" ")[0] : "") + " 👋"; }
+function enterApp(u, resume, keep){
+  uid = u.id; me = u; let saved = null;
+  try { saved = JSON.parse(localStorage.getItem("studyloop_data_" + uid) || "null"); } catch (e) {}
+  S = Object.assign(JSON.parse(DEF), saved || {});
+  if (!resume) { u.prev = u.last || null; u.last = Date.now(); u.logins = (u.logins || 0) + 1; const all = getUsers(), i = all.findIndex(x => x.id === u.id); if (i >= 0) { all[i] = u; putUsers(all); } }
+  if (!resume) { try { if (keep) { localStorage.setItem(SES_KEY, uid); sessionStorage.removeItem(SES_KEY); } else { sessionStorage.setItem(SES_KEY, uid); localStorage.removeItem(SES_KEY); } } catch (e) {} }
+  $("auth").classList.add("hide"); $("avatar").textContent = u.name.trim().charAt(0).toUpperCase() || "?"; setHello(); go("home");
+}
+function logout(){
+  if (tRun) { tRun = false; clearInterval(tIv); } tAcc = 0; tShow();
+  try { localStorage.removeItem(SES_KEY); sessionStorage.removeItem(SES_KEY); } catch (e) {}
+  uid = null; me = null; S = JSON.parse(DEF); $("lPw").value = ""; setAuth("welcome"); $("auth").classList.remove("hide");
+}
+$("fLogin").onsubmit = async e => {
+  e.preventDefault();
+  if (Date.now() < lockUntil) return aerr("lErr", "Too many attempts. Please wait a few seconds.");
+  const em = $("lEmail").value.trim().toLowerCase(), pw = $("lPw").value, u = em ? getUsers().find(x => (x.name || "").trim().toLowerCase() === em || x.email === em) : null;
+  try {
+    const ok = u && await hashPw(pw, u.salt) === u.hash;
+    if (!ok) { if (++fails >= 5) { lockUntil = Date.now() + 30000; fails = 0; } return aerr("lErr", "Incorrect name or password."); }
+    fails = 0; aerr("lErr", ""); $("lPw").value = ""; enterApp(u, false, $("lKeep").checked);
+  } catch (x) { aerr("lErr", "Secure sign-in isn’t supported in this browser."); }
+};
+$("fSign").onsubmit = async e => {
+  e.preventDefault(); aerr("sErr", "");
+  const name = $("sName").value.trim(), em = name.toLowerCase(), pw = $("sPw").value, school = "";
+  if (name.length < 2) return aerr("sErr", "Please enter a name (at least 2 characters).");
+  
+  if (pw.length < 6) return aerr("sErr", "Please create a password of at least 6 characters.");
+  
+  
+  
+  const users = getUsers(); if (users.some(u => (u.name || "").trim().toLowerCase() === em)) return aerr("sErr", "That name is taken. Pick another or log in.");
+  try {
+    const sb = new Uint8Array(16); crypto.getRandomValues(sb); const salt = toHex(sb), hash = await hashPw(pw, salt);
+    const u = {id: "u" + Date.now(), name, email: "", salt, hash, grade: $("sGrade").value, school: "", target: "", created: Date.now(), logins: 0};
+    if (!users.length) { try { const old = localStorage.getItem("studyloop"); if (old) localStorage.setItem("studyloop_data_" + u.id, old); } catch (x) {} }
+    users.push(u); if (!putUsers(users)) return aerr("sErr", "Couldn’t save your account. Storage may be blocked in this browser.");
+    $("sPw").value = ""; enterApp(u, false, false);
+  } catch (x) { aerr("sErr", "Secure sign-up isn’t supported in this browser."); }
+};
+function renderProfile(){
+  if (!me) return;
+  $("pAv").textContent = me.name.trim().charAt(0).toUpperCase(); $("pName").textContent = me.name; $("pEmail").textContent = me.email && me.email.includes("@") ? me.email : "@" + me.name;
+  const rows = [["Class / level", me.grade], ["Joined", new Date(me.created).toLocaleDateString()], ["Last login", me.prev ? new Date(me.prev).toLocaleString() : "First login"], ["Total logins", me.logins || 1]];
+  const info = $("pInfo"); info.innerHTML = "";
+  rows.forEach(r => { const d = el("div", "bk"); d.append(el("span", null, r[0]), el("b", null, String(r[1]))); info.appendChild(d); });
+  const st = $("pStats"); st.innerHTML = "";
+  [[S.xp, "Total XP"], [S.quizzes, "Quizzes"], [fmtMin(totalSec()), "Study time"], [new Set(S.days).size, "Active days"]].forEach(p => { const d = el("div", "stat"); d.append(el("b", null, String(p[0])), el("span", null, p[1])); st.appendChild(d); });
+}
+$("avatar").onclick = () => go("profile");
+$("pBack").onclick = () => go("home");
+$("logout").onclick = () => { if (confirm("Log out?")) logout(); };
+$("delAcc").onclick = () => {
+  if (!confirm("Delete your account and all saved progress on this device? This can’t be undone.")) return;
+  putUsers(getUsers().filter(x => x.id !== uid)); try { localStorage.removeItem("studyloop_data_" + uid); } catch (e) {} logout();
+};
+function boot(){
+  const users = getUsers(); let sid = null; try { sid = sessionStorage.getItem(SES_KEY) || localStorage.getItem(SES_KEY); } catch (e) {}
+  const u = users.find(x => x.id === sid);
+  if (u) enterApp(u, true); else { $("auth").classList.remove("hide"); setAuth("welcome"); }
+}
+
+function showErr(t){ const e = $("err"); e.textContent = t; e.classList.toggle("hide", !t); }
+$("demo").onclick = () => { $("notes").value = SAMPLE; };
+
+async function build(extra, n, d){
+  const msgs = ["Reading your notes…", "Spotting key concepts…", "Writing questions…"]; let m = 0;
+  $("lmsg").textContent = msgs[0]; $("load").classList.remove("hide");
+  const iv = setInterval(() => { m = (m + 1) % msgs.length; $("lmsg").textContent = msgs[m]; }, 1800);
+  const prompt = "You are an expert tutor. Using ONLY the notes below, write " + n + " " + d.toLowerCase() + " multiple-choice questions in " + $("lang").value + ". " + extra +
+    " Each has exactly 4 plausible options, one correct answer, a one-sentence explanation, and a 2-3 word topic label. Return ONLY JSON, no markdown: {\"title\":\"short deck title\",\"recap\":\"2 sentence recap\",\"questions\":[{\"topic\":\"...\",\"question\":\"...\",\"options\":[\"A\",\"B\",\"C\",\"D\"],\"answer\":0,\"explanation\":\"...\"}]} where answer is the index 0-3.\n\nNOTES:\n" + notesText.slice(0, 12000);
+  try {
+    const out = await sample.json(prompt);
+    const arr = (out && out.questions) || [];
+    const q = arr.filter(x => x && x.question && Array.isArray(x.options) && x.options.length >= 2 && Number.isInteger(x.answer));
+    if (!q.length) throw new Error("empty");
+    return {quiz: q, title: (out.title || "My quiz"), recap: out.recap || ""};
+  } catch (e) {
+    showErr(e && e.code === "not_granted" ? "Access to AI was declined, so the quiz can’t be made." : e && e.code === "rate_limited" ? "Too many requests. Wait a moment and retry." : "Couldn’t make the quiz. Try shorter notes.");
+    return null;
+  } finally { clearInterval(iv); $("load").classList.add("hide"); }
+}
+
+$("gen").onclick = async () => {
+  const notes = $("notes").value.trim();
+  if (notes.length < 80) return showErr("Paste a few more sentences first.");
+  if (!sample) return showErr("AI isn’t available in this view. Open the app in Claude and allow access.");
+  showErr(""); notesText = notes;
+  const r = await build("", $("num").value, $("diff").value); if (!r) return;
+  quiz = r.quiz; recap = "";
+  curDeck = {id: Date.now(), title: r.title, quiz: r.quiz, notes: notes.slice(0, 12000), date: new Date().toLocaleDateString()};
+  S.decks.unshift(curDeck); S.decks = S.decks.slice(0, 20); save(); start();
+};
+
+function topicStats(){ const st = {}; quiz.forEach((q, k) => { const t = q.topic || "General"; st[t] = st[t] || {c: 0, n: 0}; st[t].n++; if (answers[k] && answers[k].k === q.answer) st[t].c++; }); return st; }
+
+$("fix").onclick = async () => {
+  if (!sample || !notesText) return;
+  const st = topicStats(), weak = Object.keys(st).filter(t => st[t].c / st[t].n < 0.7), list = (weak.length ? weak : Object.keys(st)).join(", ");
+  const note = weak.length ? "Focus on these weak topics: " + list + ". Test them from NEW angles, not repeating earlier questions." : "The student did well, so write harder application questions on: " + list + ".";
+  const r = await build(note, 5, "Medium"); if (!r) return alert("Couldn’t build the revision round. Please try again.");
+  quiz = r.quiz; recap = r.recap; start();
+};
+
+function start(){ qStart = Date.now(); i = 0; score = 0; gain = 0; streakQ = 0; answers = []; go("quiz"); render(); }
+function setConf(c){ if (locked) return; conf = c; $("cSure").classList.toggle("on", c === "sure"); $("cGuess").classList.toggle("on", c === "guess"); }
+$("cSure").onclick = () => setConf("sure"); $("cGuess").onclick = () => setConf("guess");
+
+function render(){
+  const q = quiz[i]; locked = false; sel = -1; setConf("sure");
+  $("count").textContent = (i + 1) + "/" + quiz.length; $("prog").style.width = (i / quiz.length * 100) + "%";
+  $("topic").textContent = (recap && i === 0 ? "📖 " : "") + (q.topic || "General");
+  $("qtext").textContent = q.question;
+  $("sheet").classList.add("hide"); $("so").classList.add("hide"); $("check").classList.remove("hide"); $("check").disabled = true; $("chips").classList.remove("hide");
+  $("opts").innerHTML = "";
+  q.options.forEach((o, k) => { const b = document.createElement("button"); b.className = "opt"; b.textContent = o; b.onclick = () => { if (locked) return; sel = k; [...$("opts").children].forEach((x, n) => x.classList.toggle("sel", n === k)); $("check").disabled = false; }; $("opts").appendChild(b); });
+  if (recap && i === 0) { const r = document.createElement("div"); r.className = "simple"; r.textContent = "Quick recap: " + recap; $("opts").prepend(r); }
+}
+
+$("check").onclick = () => {
+  if (sel < 0) return; locked = true;
+  const q = quiz[i], right = sel === q.answer; answers.push({k: sel, conf});
+  if (right) { score++; streakQ++; gain += 10 + (conf === "sure" ? 5 : 0) + Math.min(streakQ, 5); } else { streakQ = 0; if (conf === "sure") gain = Math.max(0, gain - 5); }
+  [...$("opts").querySelectorAll(".opt")].forEach((b, n) => { b.classList.remove("sel"); if (n === q.answer) b.classList.add("ok"); else if (n === sel) b.classList.add("bad"); });
+  const sh = $("sheet"); sh.className = right ? "ok" : "bad";
+  $("sh").textContent = right ? (conf === "guess" ? "Correct! 🍀 Lucky guess?" : "Correct! 🎉") : "Not quite";
+  $("se").textContent = (q.explanation || "") + (!right && conf === "sure" ? " ⚠️ You were sure. This is a blind spot." : "");
+  $("next").textContent = i === quiz.length - 1 ? "See results" : "Continue"; $("so").classList.add("hide");
+};
+
+$("simple").onclick = async () => {
+  const q = quiz[i], o = $("so"); if (!sample) return;
+  o.textContent = "Thinking…"; o.classList.remove("hide");
+  try { const r = await sample("Explain this to a 12-year-old in 2-3 short sentences with an everyday analogy, in " + $("lang").value + ". Question: " + q.question + " Correct answer: " + q.options[q.answer] + ". Context: " + (q.explanation || "")); o.textContent = r.text; }
+  catch (e) { o.textContent = "Couldn’t load that right now."; }
+};
+$("next").onclick = () => { if (i < quiz.length - 1) { i++; render(); } else finish(); };
+$("quit").onclick = () => { if (confirm("Leave this quiz?")) go("home"); };
+
+function finish(){
+  const st = topicStats(), pct = Math.round(score / quiz.length * 100);
+  S.xp += gain; S.quizzes++; S.c += score; S.n += quiz.length;
+  Object.keys(st).forEach(t => { S.topics[t] = S.topics[t] || {c: 0, n: 0}; S.topics[t].c += st[t].c; S.topics[t].n += st[t].n; });
+  const today = key(new Date()); if (!S.days.includes(today)) S.days.push(today); S.days = S.days.slice(-400);
+  const L = S.log[today] = S.log[today] || {q: 0, xp: 0, c: 0, n: 0}; L.q++; L.xp += gain; L.c += score; L.n += quiz.length; L.sec = (L.sec || 0) + Math.min(Math.round((Date.now() - qStart) / 1000), 1800); save();
+  go("result");
+  $("pct").textContent = pct + "%"; $("arc").style.strokeDashoffset = 327;
+  setTimeout(() => { $("arc").style.strokeDashoffset = 327 - 327 * pct / 100; }, 80);
+  $("rsum").textContent = score + " of " + quiz.length + " correct · +" + gain + " XP";
+  const blind = answers.filter((a, k) => a.k !== quiz[k].answer && a.conf === "sure").length, lucky = answers.filter((a, k) => a.k === quiz[k].answer && a.conf === "guess").length;
+  $("insight").textContent = [blind ? "⚠️ " + blind + " blind spot" + (blind > 1 ? "s" : "") + " (sure but wrong)" : "", lucky ? "🍀 " + lucky + " lucky guess" + (lucky > 1 ? "es" : "") : ""].filter(Boolean).join(" · ");
+  const m = $("mastery"); m.innerHTML = ""; Object.keys(st).forEach(t => meter(m, t, Math.round(st[t].c / st[t].n * 100)));
+  $("fix").classList.toggle("hide", !notesText); afterQuiz();
+}
+$("retry").onclick = () => start(); $("done").onclick = () => go("home");
+go("home");
+boot();
+</script>
+</body>
+</html>
